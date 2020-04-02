@@ -1,21 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken')
 const User = require('../models/user');
 const Blog = require('../models/blog');
 
-
-const db = "mongodb://localhost:27017/myapp";
-
-
-mongoose.connect(db, function(err){
-    if(err){
-        console.error('Error! ' + err)
-    } else {
-      console.log('Connected to mongodb')      
-    }
-});
 
 function verifyToken(req, res, next) {
   if(!req.headers.authorization) {
@@ -50,7 +38,7 @@ router.get('/your-blogs',verifyToken,(req,res) => {
         res.status(500).send("Unable to Fetch Data!")
       }
       else {
-        res.send(blogs)
+        res.status(200).send(blogs)
       }
       
     })

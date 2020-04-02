@@ -13,6 +13,7 @@ import { EventService } from './event.service';
 import { AuthGuard } from './auth.guard';
 import { TokenInterceptorService } from './token-interceptor.service';
 import { PostBlogComponent } from './post-blog/post-blog.component';
+import { AllBlogsComponent } from './all-blogs/all-blogs.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { PostBlogComponent } from './post-blog/post-blog.component';
     LoginComponent,
     EventsComponent,
     SpecialEventsComponent,
-    PostBlogComponent
+    PostBlogComponent,
+    AllBlogsComponent
   ],
   imports: [
     BrowserModule,
