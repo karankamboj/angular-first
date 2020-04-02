@@ -5,13 +5,19 @@ import { SpecialEventsComponent } from './special-events/special-events.componen
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { AuthGuard } from './auth.guard';
+import { PostBlogComponent } from './post-blog/post-blog.component';
 
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/events',
+    redirectTo: '/post-blog',
     pathMatch: 'full'
+  },
+  {
+    path: 'post-blog',
+    component : PostBlogComponent,
+    canActivate : [AuthGuard]
   },
   {
     path: 'events',

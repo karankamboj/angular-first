@@ -3,10 +3,11 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken')
 const User = require('../models/user');
+const Blog = require('../models/blog');
 
 
-const db = "mongodb+srv://karan:karan@cluster0-6dguu.mongodb.net/eventsdb?retryWrites=true&w=majority";
-// mongoose.Promise = global.Promise;
+const db = "mongodb://localhost:27017/myapp";
+
 
 mongoose.connect(db, function(err){
     if(err){
@@ -19,16 +20,13 @@ mongoose.connect(db, function(err){
 function verifyToken(req, res, next) {
   if(!req.headers.authorization) {
     return res.status(401).send('Unauthorized request')
-  }
-
-  
+  }  
   let token = req.headers.authorization.split(' ')[1]
-  
   
   if(token === 'null') {
     return res.status(401).send('Unauthorized request')    
   }
-  
+
   try {
 
     let payload = jwt.verify(token, 'secretKey')
@@ -43,19 +41,88 @@ function verifyToken(req, res, next) {
   next()
 }
 
+router.get('/your-blogs',verifyToken,(req,res) => {
+    let token = req.header.authorization.split(' ')[1]
+    let payload = jwt.verify(token, 'secreetKey')
+    let email = payload.email
+    Blog.find({ email:email }, (err,blogs) => {
+      if(err) {
+        res.status(500).send("Unable to Fetch Data!")
+      }
+      else {
+        res.send(blogs)
+      }
+      
+    })
+})
 
-router.post('/register', (req, res) => {
-  let userData = req.body
-  let user = new User(userData)
-  user.save((err, registeredUser) => {
+router.get('/all-blogs',(req,res) => {
+    
+    Blog.find({}, (err,data) => {
+      if(err) {
+        res.status(500).send("Unable to Fetch!")
+      }
+      else
+      {
+        res.send(data)
+      }
+      
+    })
+    
+})
+
+router.post('/post-blog',verifyToken, (req,res) => {
+
+  let token = req.headers.authorization.split(' ')[1]
+  let payload = jwt.verify(token, 'secretKey')
+  let blogData = req.body
+  blogData["email"]=payload.email
+  console.log(blogData)
+  
+  let blog = new Blog(blogData)
+  
+  blog.save((err, postedBlog) => {
     if (err) {
-      console.log(err)      
+      console.log(err)   
+       res.status(500).send("NOT POST")   
     } else {
-      let payload = { subject : registeredUser._id }
-      let token = jwt.sign(payload, 'secretKey')
-      res.status(200).send({token})
+      res.status(200).send('Posted')
     }
   })
+
+  
+
+
+
+})
+router.post('/register', (req, res) => {
+  let userData = req.body
+  let email = req.body.email
+  User.findOne({email: userData.email}, (err, user) => {
+
+    if(err) {
+      console.log(err)
+    }
+    else {
+      if(!user) {
+        let user = new User(userData)
+        user.save((err, registeredUser) => {
+          if (err) {
+            console.log(err)      
+          } else {
+            let payload = { subject : registeredUser._id, email: registeredUser.email }
+            let token = jwt.sign(payload, 'secretKey')
+            res.status(200).send({token})
+          }
+        })
+      }
+      else {
+        res.status(401).send("Username Already Exists")
+      }
+    }
+
+  })
+
 })
 
 router.post('/login', (req, res) => {
@@ -63,14 +130,17 @@ router.post('/login', (req, res) => {
   User.findOne({email: userData.email}, (err, user) => {
     if (err) {
       console.log(err)    
-    } else {
+    } 
+    else {
+
       if (!user) {
         res.status(401).send('Invalid Email')
-      } else 
-      if ( user.password !== userData.password) {
+      } 
+      else if ( user.password !== userData.password) {
         res.status(401).send('Invalid Password')
-      } else {
-        let payload = { subject : user._id }
+      } 
+      else {
+        let payload = { subject : user._id, email: user.email }
         let token = jwt.sign(payload, 'secretKey')
 
         res.status(200).send({token})
@@ -78,8 +148,6 @@ router.post('/login', (req, res) => {
     }
   })
 })
-
-
 
 router.get('/events', (req,res) => {
   let events = [
@@ -122,6 +190,7 @@ router.get('/events', (req,res) => {
   ]
   res.json(events)
 })
+
 
 router.get('/special', verifyToken, (req, res) => {
   let specialEvents = [

@@ -1,0 +1,10 @@
+<div id="wrapper">
+	<form id="paper">
+		<div id="margin" style="color:black" >Title: <input id="title" type="text" [(ngModel)]="blogData.title" name="title"></div>
+		<textarea placeholder="Enter your blog!" [(ngModel)]="blogData.content" name="content" id="text" name="text" rows="4" style="overflow: hidden; word-wrap: break-word; resize: none; height: 250px; "></textarea>  
+		<br>
+		<input id="button" type="submit" value="Create" (click)="postBlog()">
+		
+	</form>
+
+</div>
