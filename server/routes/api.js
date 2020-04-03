@@ -26,12 +26,16 @@ function verifyToken(req, res, next) {
   catch(err) {
     return res.status(401).send('Unauthorized request')    
   }
+  console.log("Token Verified")
   next()
 }
 
-router.get('/your-blogs',verifyToken,(req,res) => {
-    let token = req.header.authorization.split(' ')[1]
-    let payload = jwt.verify(token, 'secreetKey')
+router.get('/my-blogs',verifyToken,(req,res) => {
+
+ 
+
+    let token = req.headers.authorization.split(' ')[1]
+    let payload = jwt.verify(token, 'secretKey')
     let email = payload.email
     Blog.find({ email:email }, (err,blogs) => {
       if(err) {

@@ -14,6 +14,9 @@ import { AuthGuard } from './auth.guard';
 import { TokenInterceptorService } from './token-interceptor.service';
 import { PostBlogComponent } from './post-blog/post-blog.component';
 import { AllBlogsComponent } from './all-blogs/all-blogs.component';
+import { GetBlogsService } from './get-blogs.service';
+import { PostBlogService } from './post-blog.service';
+import { MyBlogsComponent } from './my-blogs/my-blogs.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +26,8 @@ import { AllBlogsComponent } from './all-blogs/all-blogs.component';
     EventsComponent,
     SpecialEventsComponent,
     PostBlogComponent,
-    AllBlogsComponent
+    AllBlogsComponent,
+    MyBlogsComponent
   ],
   imports: [
     BrowserModule,
@@ -31,7 +35,7 @@ import { AllBlogsComponent } from './all-blogs/all-blogs.component';
     HttpClientModule,
     AppRoutingModule
   ],
-  providers: [AuthService, AuthGuard, EventService, 
+  providers: [AuthService, AuthGuard, EventService, GetBlogsService,GetBlogsService,PostBlogComponent,
   {
     provide: HTTP_INTERCEPTORS,
     useClass: TokenInterceptorService,

@@ -2,7 +2,7 @@
 
 <div class="wrap"> 
 
-  <div *ngFor="let blog of allBlogs ; index as i" class="box box{{(i)%8+1}} shadow{{(i)%8+1}}" style="width:100%; height:auto">
+  <div *ngFor="let blog of myBlogs ; index as i" class="box box{{(i)%8+1}} shadow{{(i)%8+1}}" style="width:100%; height:auto">
     <div class="row" style="width:auto; height:auto">
       <div class="col" style="width:auto; height:auto">
         <h5>Title : {{blog.title}}</h5>

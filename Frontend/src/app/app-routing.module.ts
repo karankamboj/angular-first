@@ -6,13 +6,25 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { AuthGuard } from './auth.guard';
 import { PostBlogComponent } from './post-blog/post-blog.component';
+import { AllBlogsComponent } from './all-blogs/all-blogs.component';
+import { MyBlogsComponent } from './my-blogs/my-blogs.component';
 
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/post-blog',
+    redirectTo: '/login',
     pathMatch: 'full'
+  },
+  {
+    path: 'my-blogs',
+    component: MyBlogsComponent,
+    canActivate : [AuthGuard]
+
+  },
+  {
+    path: 'all-blogs',
+    component: AllBlogsComponent
   },
   {
     path: 'post-blog',
