@@ -3,7 +3,7 @@ const router = express.Router();
 const jwt = require('jsonwebtoken')
 const User = require('../models/user');
 const Blog = require('../models/blog');
-
+const multer = require('multer')
 
 function verifyToken(req, res, next) {
   if(!req.headers.authorization) {
@@ -30,9 +30,25 @@ function verifyToken(req, res, next) {
   next()
 }
 
-router.get('/my-blogs',verifyToken,(req,res) => {
-
+const upload = multer({
+  dest: 'avatars',
  
+  fileFilter(req, file, cb) {
+      if (!file.originalname.match(/\.(jpg|jpeg|png|JPG|JPEG|PNG)$/)) {
+          return cb(new Error('Please upload an image'))
+      }
+
+      cb(undefined, true)
+  }
+})
+
+router.post('/upload',upload.single('avatar'),(req,res) => {
+  res.send("iMAGE UPLOADED")
+},(err,req,res,next) => {
+  res.send(err.message)
+})
+
+router.get('/my-blogs',verifyToken,(req,res) => {
 
     let token = req.headers.authorization.split(' ')[1]
     let payload = jwt.verify(token, 'secretKey')
