@@ -3,6 +3,7 @@ const router = express.Router();
 const jwt = require('jsonwebtoken')
 const User = require('../models/user');
 const Blog = require('../models/blog');
+const Avatar = require('../models/avatar');
 const multer = require('multer')
 
 function verifyToken(req, res, next) {
@@ -31,19 +32,29 @@ function verifyToken(req, res, next) {
 }
 
 const upload = multer({
-  dest: 'avatars',
- 
+  
   fileFilter(req, file, cb) {
+    
       if (!file.originalname.match(/\.(jpg|jpeg|png|JPG|JPEG|PNG)$/)) {
           return cb(new Error('Please upload an image'))
       }
-
+      console.log("CHECK")
       cb(undefined, true)
   }
 })
 
-router.post('/upload',upload.single('avatar'),(req,res) => {
-  res.send("iMAGE UPLOADED")
+router.post('/upload',upload.single('avatar'), (req,res) => {
+  console.log(req)
+  let avatar = new Avatar({avatar: req.file.buffer})
+  avatar.save((err,uploadedFile) => {
+    if(err) {
+      res.status(400).send("ERROR AGI")
+    }
+    else {
+      res.status(200).send(avatar)
+    }
+  })
+
 },(err,req,res,next) => {
   res.send(err.message)
 })

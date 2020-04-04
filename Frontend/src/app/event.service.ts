@@ -12,6 +12,8 @@ export class EventService {
 
   constructor(private http: HttpClient) { 
   }
+  
+  
 
   getEvents() {
     return this.http.get<any>(this._eventsUrl)
