@@ -44,16 +44,14 @@ const upload = multer({
 })
 
 router.post('/upload',upload.single('avatar'), (req,res) => {
-  console.log(req)
-  let avatar = new Avatar({avatar: req.file.buffer})
-  avatar.save((err,uploadedFile) => {
-    if(err) {
-      res.status(400).send("ERROR AGI")
-    }
-    else {
-      res.status(200).send(avatar)
-    }
-  })
+  // console.log(req)
+  let avatar =  req.file.buffer
+  let token = req.headers.authorization.split(' ')[1]
+  let payload = jwt.verify(token, 'secretKey')
+  let email = payload.email
+  // console.log(avatar)
+  User.updateOne({ email: email }, { $set: { avatar: avatar } }).then((result)=> console.log(""))
+  .catch((err)=>console.log(""))
 
 },(err,req,res,next) => {
   res.send(err.message)
