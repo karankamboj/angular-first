@@ -1,10 +1,11 @@
-<h2 style="text-align:center">Your Profile</h2>
+<!-- <h2 style="text-align:center">Your Profile</h2> -->
 
-<div class="card" style="box-shadow: 5px 10px #888888;">
-  <img src="{{avatarImage}}" alt="Avatar" height="250px" style="border-radius: 50%;margin-top:20px;margin-bottom:20px;margin-left:20px;margin-right:20px;">
-  <h1>{{email}}</h1>
-  <p class="title">Software Developer</p>
-  <p>NIT Kurukshetra</p>
+<div class="card" style="box-shadow: 5px 10px 18px #888888;margin-top:50px">
+  <img src="{{avatarImage}}" alt="Avatar" height="200px" style="border-radius: 50%;margin-top:20px;margin-bottom:20px;margin-left:45px;margin-right:45px;box-shadow: 5px 10px 18px #888888">
+  <h1>{{name}}</h1>
+  <p class="title">{{designation}}</p>
+  <p class="title">{{college}}</p>
+  <p >{{about}}</p>
   
-  <p><button>Edit Profile</button></p>
+  <p><button (click)="goToEditProfile()">Edit Profile</button></p>
 </div>

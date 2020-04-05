@@ -9,9 +9,13 @@ export class AuthService {
   private _registerUrl = "http://localhost:3000/api/register";
   private _loginUrl = "http://localhost:3000/api/login";
   private _getProfileUrl = "http://localhost:3000/api/get-profile";
+  private _updateProfileUrl = "http://localhost:3000/api/update-profile"
   constructor(private http: HttpClient, private _router: Router) { 
   }
-
+ 
+  updateProfileData(data) {
+    return this.http.post<any>(this._updateProfileUrl,data)
+  }
   getProfile() {
     return this.http.get<any>(this._getProfileUrl)
   }

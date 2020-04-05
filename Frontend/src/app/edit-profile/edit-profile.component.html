@@ -6,39 +6,39 @@
         <!-- form card login -->
         <div class="card rounded-0">
           <div class="card-header">
-            <h3 class="mb-0">Register</h3>
+            <h3 class="mb-0">Edit Your Profile</h3>
           </div>
           <div class="card-body">
             <form class="form">
               <div class="form-group">
                 <label for="uname1">Name</label>
-                <input type="text" [(ngModel)]="registerUserData.name" name="name"  class="form-control rounded-0" required>
+                <input type="text" [(ngModel)]="editUserData.name" name="name"  class="form-control rounded-0" required>
               </div>
               <div class="form-group">
                 <label for="uname1">Username</label>
-                <input type="text" [(ngModel)]="registerUserData.email" name="email"  class="form-control rounded-0" required>
+                <input type="text" [(ngModel)]="editUserData.email" name="email"  class="form-control rounded-0" required>
               </div>
               <div class="form-group">
                 <label>Password</label>
-                <input [(ngModel)]="registerUserData.password" name="password"  class="form-control rounded-0"  required>
+                <input [(ngModel)]="editUserData.password" name="password"  class="form-control rounded-0"  required>
               </div>
               <div class="form-group">
                 <label for="uname1">Designation</label>
-                <input type="text" [(ngModel)]="registerUserData.designation" name="designation"  class="form-control rounded-0" required>
+                <input type="text" [(ngModel)]="editUserData.designation" name="designation"  class="form-control rounded-0" required>
               </div>
               <div class="form-group">
                 <label for="uname1">College</label>
-                <input type="text" [(ngModel)]="registerUserData.college" name="college"  class="form-control rounded-0" required>
+                <input type="text" [(ngModel)]="editUserData.college" name="college"  class="form-control rounded-0" required>
               </div>
               <div class="form-group">
                 <label for="uname1">About </label>
-                <input type="text" [(ngModel)]="registerUserData.about" name="about"  class="form-control rounded-0" required>
+                <input type="text" [(ngModel)]="editUserData.about" name="about"  class="form-control rounded-0" required>
               </div>
               <div class="form-group">
                 <label>Profile Pic</label>
                 <input class="form-control rounded-0" type="file" (change)="onFileSelectedEvent($event)">
               </div>
-              <button type="button" (click)="registerUser()" class="btn btn-primary float-right">Register</button>
+              <button type="button" (click)="updateProfile()" class="btn btn-primary float-right">Register</button>
             </form>
           </div>
           <!--/card-block-->

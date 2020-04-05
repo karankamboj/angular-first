@@ -14,6 +14,10 @@ export class RegisterComponent implements OnInit {
   registerUserData = {
     email: "",
     password: "",
+    name:"",
+    designation:"",
+    college:"",
+    about:"",
     avatar: null
   }
   selectedFile:File = null;
@@ -29,16 +33,11 @@ export class RegisterComponent implements OnInit {
     
   }
 
-  // Delete 
-  upload () {
-    
-    
-  }
 
   registerUser()  {
-    if(this.selectedFile==null)
+    if(this.selectedFile==null || this.registerUserData.email=="" || this.registerUserData.password=="")
     {
-      alert("Please Select Profile Pic")
+      alert("Please add username,password and Profile Pic")
       return 
     }
 

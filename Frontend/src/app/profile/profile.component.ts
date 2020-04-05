@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
+import { Router } from '@angular/router'
 
 @Component({
   selector: 'app-profile',
@@ -9,14 +10,24 @@ import { AuthService } from '../auth.service';
 export class ProfileComponent implements OnInit {
   avatarImage="http://localhost:3000/api/get-avatar/"
   email=""
-  constructor(private _auth : AuthService) { }
+  name=""
+  about=""
+  designation=""
+  college=""
+
+  constructor(private _auth : AuthService,private _router: Router) { }
 
   ngOnInit(): void {
 
     this._auth.getProfile()
     .subscribe( res => {
-      this.avatarImage+=res.id
+      this.avatarImage+=res._id
       this.email=res.email
+      this.about=res.about
+      this.name=res.name
+      this.designation=res.designation
+      this.college=res.college
+      console.log(res)
       
     },
     err =>{
@@ -24,6 +35,11 @@ export class ProfileComponent implements OnInit {
       alert("Some Error Occured")
     })
 
+  }
+
+  goToEditProfile()
+  {
+    this._router.navigate(['/edit-profile'])
   }
 
 }

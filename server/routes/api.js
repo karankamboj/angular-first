@@ -26,7 +26,6 @@ function verifyToken(req, res, next) {
   catch(err) {
     return res.status(401).send('Unauthorized request')    
   }
-  console.log("Token Verified")
   next()
 }
 
@@ -43,7 +42,7 @@ const upload = multer({
 })
 
 router.post('/upload',upload.single('avatar'), (req,res) => {
-  // console.log(req)
+  // res.send(req)
   let avatar =  req.file.buffer
   let token = req.headers.authorization.split(' ')[1]
   let payload = jwt.verify(token, 'secretKey')
@@ -56,18 +55,43 @@ router.post('/upload',upload.single('avatar'), (req,res) => {
   res.send(err.message)
 })
 
-router.get('/get-profile',verifyToken,(req,res) => {
-
-  console.log("REQ")
-  
+router.post('/update-profile',verifyToken,(req,res) => {
   let token = req.headers.authorization.split(' ')[1]
   let payload = jwt.verify(token, 'secretKey')
-  console.log(payload)
+  let id = payload.subject
+  try {
+    const user = User.findByIdAndUpdate(id,req.body).then((data)=>console.log(data))
+    if(!user) {
+      res.status(404).send()
+    }
+    else{
+      res.send(user)
+    }
+
+  }
+  catch(e){
+    res.send(e)
+  }
+  
+
+})
+router.get('/get-profile',verifyToken,(req,res) => {
+
+  let token = req.headers.authorization.split(' ')[1]
+  let payload = jwt.verify(token, 'secretKey')
   let email = payload.email
   let id = payload.subject
-  res.send({email:email,id:id})
 
-
+  User.findOne({_id :id }, (err,data) => {
+    if(err) {
+      res.status(500).send("Unable to Fetch!")
+    }
+    else
+    {
+      res.send(data)
+    }
+    
+  })
 })
 router.get('/get-avatar/:id',(req,res) => {
 

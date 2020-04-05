@@ -9,6 +9,7 @@ import { PostBlogComponent } from './post-blog/post-blog.component';
 import { AllBlogsComponent } from './all-blogs/all-blogs.component';
 import { MyBlogsComponent } from './my-blogs/my-blogs.component';
 import { ProfileComponent } from './profile/profile.component';
+import { EditProfileComponent } from './edit-profile/edit-profile.component';
 
 
 const routes: Routes = [
@@ -16,6 +17,12 @@ const routes: Routes = [
     path: '',
     redirectTo: '/login',
     pathMatch: 'full'
+  },
+  {
+    path: 'edit-profile',
+    component: EditProfileComponent,
+    canActivate : [AuthGuard]
+
   },
   {
     path: 'profile',
