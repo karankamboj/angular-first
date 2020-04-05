@@ -52,9 +52,13 @@ export class RegisterComponent implements OnInit {
           this.http.post<any>("http://localhost:3000/api/upload",fd,{ responseType:'blob' as 'json'})
           .subscribe(res => {
             console.log(res)
+            alert("REGISTER SUCCESS")
             this._router.navigate(['/post-blog'])
           },
-          err=>console.log(err)) 
+          err=>{
+            alert("NOT SUCESS")
+            console.log(err)
+          }) 
 
           
         },

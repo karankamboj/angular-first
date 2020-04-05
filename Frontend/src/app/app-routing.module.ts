@@ -8,6 +8,7 @@ import { AuthGuard } from './auth.guard';
 import { PostBlogComponent } from './post-blog/post-blog.component';
 import { AllBlogsComponent } from './all-blogs/all-blogs.component';
 import { MyBlogsComponent } from './my-blogs/my-blogs.component';
+import { ProfileComponent } from './profile/profile.component';
 
 
 const routes: Routes = [
@@ -15,6 +16,12 @@ const routes: Routes = [
     path: '',
     redirectTo: '/login',
     pathMatch: 'full'
+  },
+  {
+    path: 'profile',
+    component: ProfileComponent,
+    canActivate : [AuthGuard]
+
   },
   {
     path: 'my-blogs',

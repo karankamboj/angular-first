@@ -3,7 +3,6 @@ const router = express.Router();
 const jwt = require('jsonwebtoken')
 const User = require('../models/user');
 const Blog = require('../models/blog');
-const Avatar = require('../models/avatar');
 const multer = require('multer')
 
 function verifyToken(req, res, next) {
@@ -50,11 +49,45 @@ router.post('/upload',upload.single('avatar'), (req,res) => {
   let payload = jwt.verify(token, 'secretKey')
   let email = payload.email
   // console.log(avatar)
-  User.updateOne({ email: email }, { $set: { avatar: avatar } }).then((result)=> console.log(""))
-  .catch((err)=>console.log(""))
+  User.updateOne({ email: email }, { $set: { avatar: avatar } }).then((result)=> res.send("DONE"))
+  .catch((err)=>res.status(400).send("ERR"))
 
 },(err,req,res,next) => {
   res.send(err.message)
+})
+
+router.get('/get-profile',verifyToken,(req,res) => {
+
+  console.log("REQ")
+  
+  let token = req.headers.authorization.split(' ')[1]
+  let payload = jwt.verify(token, 'secretKey')
+  console.log(payload)
+  let email = payload.email
+  let id = payload.subject
+  res.send({email:email,id:id})
+
+
+})
+router.get('/get-avatar/:id',(req,res) => {
+
+  try {
+    User.find({_id :req.params.id }, (err,data) => {
+      if(err) {
+        res.status(500).send("Unable to Fetch!")
+      }
+      else
+      {
+        res.set('Content-type','image/jpg')
+        res.send(data[0].avatar)
+      }
+      
+    })
+  }
+  catch(e) {
+    res.status(404).send(e)
+
+  }
 })
 
 router.get('/my-blogs',verifyToken,(req,res) => {
