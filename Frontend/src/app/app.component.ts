@@ -12,6 +12,16 @@ export class AppComponent {
   
   constructor(private _authService: AuthService){}
 
+
+  ngOnInit(): void {
+      fetch('https://api.countapi.xyz/info/karankamboj/counter1/?amount=1')
+      .then(res => res.json()).then(res => {
+        document.getElementById('counter').innerHTML="Counter : "+res.value
+
+      })
+  }
+
+
   loggedIn() {
     return this._authService.loggedIn()
   }
