@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { GetBlogsService } from '../get-blogs.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router'
+import * as $ from 'jquery'
 
 @Component({
   selector: 'app-my-blogs',
@@ -33,10 +34,31 @@ export class MyBlogsComponent implements OnInit {
             }
           }
         }
-      )
-
-
-
+      )  
+      
+      $(function(){
+        $('.wrap').delegate('.remove','click',function() {
+          console.log($(this).attr('id'))
+          var $cur=$(this)
+          var $box = $(this).closest('.box')
+          
+          $.ajax({
+            type: 'delete',
+            url: "http://localhost:3000/api/delete-blog/"+$cur.attr('id'),
+            success: function() {
+              console.log("Deleted")
+              
+              console.log("YES")
+              
+              $box.slideUp(1000, function(){
+                $(this).remove()
+             })
+            },
+            error : function() {
+              alert('Error in Deletion')
+            }
+          })
+        })
+      })
   }
-
 }

@@ -75,6 +75,20 @@ router.post('/update-profile',verifyToken,(req,res) => {
   
 
 })
+
+router.delete('/delete-blog/:id',(req,res) => {
+  let id = req.params.id
+  const blog=Blog.findByIdAndDelete(id,(err,blog) =>{
+    if(err) {
+      res.status(404).send("Cannot Delete")
+    }
+    else {
+      res.send("Deleted")
+    }
+  })
+})
+
+
 router.get('/get-profile',verifyToken,(req,res) => {
 
   let token = req.headers.authorization.split(' ')[1]
