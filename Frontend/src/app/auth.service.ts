@@ -24,8 +24,9 @@ export class AuthService {
   registerUser(user) {
     return this.http.post<any>(this._registerUrl, user)
   }
-  sendEmail(email) {
-      return this.http.post<any>(this._sendEmailUrl, email)
+  sendEmail(data) {
+      console.log(data)
+      return this.http.post<any>(this._sendEmailUrl, data)
   }
   loginUser(user) {
     return this.http.post<any>(this._loginUrl, user)

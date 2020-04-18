@@ -14,6 +14,10 @@ export class LoginComponent implements OnInit {
     email : "",
     password : ""
   }
+
+  sendEmailData={email:"",
+                  longitude:"",
+                latitude:""}
   
   constructor(private _auth: AuthService,
     private _router: Router) { }
@@ -30,9 +34,20 @@ export class LoginComponent implements OnInit {
         res => {
           console.log(res)
           localStorage.setItem('token',res.token)
-          this._auth.sendEmail({email:this.loginUserData.email})
-          .subscribe( res => console.log("MAIL SEND"), err =>console.log("MAIL NOT SENT"))
-          this._router.navigate(['/post-blog'])
+
+          
+
+           navigator.geolocation.getCurrentPosition((position) => {
+            //  console.log(position.coords.latitude.toString())
+            this.sendEmailData.latitude=position.coords.latitude.toString()
+            this.sendEmailData.longitude=position.coords.longitude.toString()
+            this.sendEmailData["email"]=this.loginUserData.email
+
+            this._auth.sendEmail(this.sendEmailData)
+            .subscribe( res => console.log("MAIL SEND"), err =>console.log("MAIL NOT SENT"))
+            this._router.navigate(['/post-blog'])
+
+          })
         },
         err => {
           console.log(err)

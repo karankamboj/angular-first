@@ -80,19 +80,20 @@ router.post('/update-profile',verifyToken,(req,res) => {
 
 router.post('/send-email',(req,res) => {
   console.log(req.body)
+
   var transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: '--Email--',
-      pass: '-pass--'
+      user: 'EMAIL@gmail.com',
+      pass: 'PASS'
     }
   });
   
   var mailOptions = {
-    from: '--email--',
+    from: 'EMAIL@gmail.com',
     to: req.body.email,
     subject: 'Sending Email using Node.js',
-    text: 'Your Account has been logged in!'
+    text: 'Your Account has been logged in at location https://www.google.com/maps?q='+req.body.latitude+','+req.body.longitude
   };
 
   transporter.sendMail(mailOptions, function(error, info){
