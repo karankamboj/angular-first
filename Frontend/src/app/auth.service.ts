@@ -10,6 +10,8 @@ export class AuthService {
   private _loginUrl = "http://localhost:3000/api/login";
   private _getProfileUrl = "http://localhost:3000/api/get-profile";
   private _updateProfileUrl = "http://localhost:3000/api/update-profile"
+  private _sendEmailUrl = "http://localhost:3000/api/send-email"
+
   constructor(private http: HttpClient, private _router: Router) { 
   }
  
@@ -22,7 +24,9 @@ export class AuthService {
   registerUser(user) {
     return this.http.post<any>(this._registerUrl, user)
   }
-
+  sendEmail(email) {
+      return this.http.post<any>(this._sendEmailUrl, email)
+  }
   loginUser(user) {
     return this.http.post<any>(this._loginUrl, user)
   }

@@ -4,6 +4,8 @@ const jwt = require('jsonwebtoken')
 const User = require('../models/user');
 const Blog = require('../models/blog');
 const multer = require('multer')
+var nodemailer = require('nodemailer');
+
 
 function verifyToken(req, res, next) {
   if(!req.headers.authorization) {
@@ -55,6 +57,7 @@ router.post('/upload',upload.single('avatar'), (req,res) => {
   res.send(err.message)
 })
 
+
 router.post('/update-profile',verifyToken,(req,res) => {
   let token = req.headers.authorization.split(' ')[1]
   let payload = jwt.verify(token, 'secretKey')
@@ -72,9 +75,36 @@ router.post('/update-profile',verifyToken,(req,res) => {
   catch(e){
     res.send(e)
   }
-  
 
 })
+
+router.post('/send-email',(req,res) => {
+  console.log(req.body)
+  var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: '--Email--',
+      pass: '-pass--'
+    }
+  });
+  
+  var mailOptions = {
+    from: '--email--',
+    to: req.body.email,
+    subject: 'Sending Email using Node.js',
+    text: 'Your Account has been logged in!'
+  };
+
+  transporter.sendMail(mailOptions, function(error, info){
+    if (error) {
+      res.send(req.body)
+    } else {
+      res.send('Email sent: ' + info.response);
+    }
+  });
+
+})
+
 
 router.delete('/delete-blog/:id',(req,res) => {
   let id = req.params.id

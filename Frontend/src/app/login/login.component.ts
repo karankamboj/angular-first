@@ -30,6 +30,8 @@ export class LoginComponent implements OnInit {
         res => {
           console.log(res)
           localStorage.setItem('token',res.token)
+          this._auth.sendEmail({email:this.loginUserData.email})
+          .subscribe( res => console.log("MAIL SEND"), err =>console.log("MAIL NOT SENT"))
           this._router.navigate(['/post-blog'])
         },
         err => {
