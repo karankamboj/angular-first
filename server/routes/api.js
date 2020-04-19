@@ -4,7 +4,31 @@ const jwt = require('jsonwebtoken')
 const User = require('../models/user');
 const Blog = require('../models/blog');
 const multer = require('multer')
-var nodemailer = require('nodemailer');
+const nodemailer = require('nodemailer');
+
+const expressWinston = require('express-winston');
+const winston = require('winston');
+var methodOverride = require('method-override');
+const bodyParser = require('body-parser');
+
+// express-winston logger makes sense BEFORE the router
+router.use(expressWinston.logger({
+  transports: [
+    new winston.transports.File({filename: 'log.json'})
+  ],
+  format: winston.format.combine(
+    winston.format.colorize(),
+    winston.format.json()
+  ),
+  responseField:!null
+}));
+expressWinston.requestWhitelist.push('body');
+
+router.get('/', function(req, res, next) {
+  res.write('This is a normal request, it should be logged to the console too');
+  res.end();
+});
+
 
 
 function verifyToken(req, res, next) {

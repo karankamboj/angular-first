@@ -34,19 +34,14 @@ export class LoginComponent implements OnInit {
         res => {
           console.log(res)
           localStorage.setItem('token',res.token)
-
-          
-
            navigator.geolocation.getCurrentPosition((position) => {
             //  console.log(position.coords.latitude.toString())
             this.sendEmailData.latitude=position.coords.latitude.toString()
             this.sendEmailData.longitude=position.coords.longitude.toString()
             this.sendEmailData["email"]=this.loginUserData.email
-
             this._auth.sendEmail(this.sendEmailData)
             .subscribe( res => console.log("MAIL SEND"), err =>console.log("MAIL NOT SENT"))
             this._router.navigate(['/post-blog'])
-
           })
         },
         err => {
