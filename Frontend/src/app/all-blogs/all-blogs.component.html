@@ -1,16 +1,40 @@
 <link href='https://fonts.googleapis.com/css?family=Didact+Gothic' rel='stylesheet' type='text/css'>
 
 <div class="wrap"> 
+  <div *ngFor="let blog of allBlogs ; index as i">
 
-  <div *ngFor="let blog of allBlogs ; index as i" class="box box{{(i)%8+1}} shadow{{(i)%8+1}}" style="width:100%; height:auto">
-    <div class="row" style="width:auto; height:auto">
-      <div class="col" style="width:auto; height:auto">
-        <h5>Title : {{blog.title}}</h5>
+
+    <div class="box box{{(i)%8+1}} shadow{{(i)%8+1}}" style="width:100%; height:auto">
+      <div class="row" style="width:auto; height:auto">
+        <div class="col" style="width:auto; height:auto">
+          <h5>Title : {{blog.title}}</h5>
+        </div>
+        <div class="col" style="width:auto; height:auto">
+          <h5> Writer : {{blog.email}} </h5>
+        </div>
       </div>
-      <div class="col" style="width:auto; height:auto">
-        <h5> Writer : {{blog.email}} </h5>
-      </div>
+      <h5 style="margin-bottom: 30px;">{{blog.content }}</h5>
     </div>
-    <h5 style="margin-bottom: 30px;">{{blog.content }}</h5>
+
+
+    
+    <div class="container">
+     <h1>Comments : </h1>  <br>
+     <div *ngFor="let comment of blog.comments;index as commenti">
+      {{commenti+1}} :{{comment.comment}} <br>
+    </div>
+      <br> <br>
+
+      <form class="form-inline" role="form">
+        <div class="form-group">
+            <input class="form-control" type="text" placeholder="Your comments" />
+        </div>
+        <div class="form-group">
+            <button class="btn btn-default">Add</button>
+        </div>
+    </form>
+    </div>
+
+
   </div>
 </div>  

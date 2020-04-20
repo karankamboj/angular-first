@@ -8,6 +8,7 @@ import { GetBlogsService } from '../get-blogs.service';
 })
 export class AllBlogsComponent implements OnInit {
   allBlogs = []
+  newComment = ""
   constructor(private _getBlogsService : GetBlogsService) { }
 
   ngOnInit(): void {

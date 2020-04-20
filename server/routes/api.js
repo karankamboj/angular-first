@@ -5,11 +5,9 @@ const User = require('../models/user');
 const Blog = require('../models/blog');
 const multer = require('multer')
 const nodemailer = require('nodemailer');
-
 const expressWinston = require('express-winston');
 const winston = require('winston');
-var methodOverride = require('method-override');
-const bodyParser = require('body-parser');
+
 
 // express-winston logger makes sense BEFORE the router
 router.use(expressWinston.logger({
@@ -25,8 +23,9 @@ router.use(expressWinston.logger({
 expressWinston.requestWhitelist.push('body');
 
 router.get('/', function(req, res, next) {
-  res.write('This is a normal request, it should be logged to the console too');
-  res.end();
+  res.write('This is a normal request, it should be logged to the console too')
+  res.end()
+
 });
 
 
@@ -81,29 +80,7 @@ router.post('/upload',upload.single('avatar'), (req,res) => {
   res.send(err.message)
 })
 
-
-router.post('/update-profile',verifyToken,(req,res) => {
-  let token = req.headers.authorization.split(' ')[1]
-  let payload = jwt.verify(token, 'secretKey')
-  let id = payload.subject
-  try {
-    const user = User.findByIdAndUpdate(id,req.body).then((data)=>console.log(data))
-    if(!user) {
-      res.status(404).send()
-    }
-    else{
-      res.send(user)
-    }
-
-  }
-  catch(e){
-    res.send(e)
-  }
-
-})
-
 router.post('/send-email',(req,res) => {
-  console.log(req.body)
 
   var transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -129,6 +106,37 @@ router.post('/send-email',(req,res) => {
   });
 
 })
+
+router.post('/add-comment',verifyToken,(req,res) => {
+
+  var blog = Blog.findById(req.body.id,function(err,blog){
+    blog.comments = blog.comments.concat({comment:req.body.comment})
+    blog.save()
+    res.send(blog)
+  })
+
+})
+
+
+router.post('/update-profile',verifyToken,(req,res) => {
+  let token = req.headers.authorization.split(' ')[1]
+  let payload = jwt.verify(token, 'secretKey')
+  let id = payload.subject
+  try {
+    const user = User.findByIdAndUpdate(id,req.body).then((data)=>console.log(data))
+    if(!user) {
+      res.status(404).send()
+    }
+    else{
+      res.send(user)
+    }
+
+  }
+  catch(e){
+    res.send(e)
+  }
+})
+
 
 
 router.delete('/delete-blog/:id',(req,res) => {
@@ -162,6 +170,7 @@ router.get('/get-profile',verifyToken,(req,res) => {
     
   })
 })
+
 router.get('/get-avatar/:id',(req,res) => {
 
   try {
@@ -232,12 +241,8 @@ router.post('/post-blog',verifyToken, (req,res) => {
       res.status(200).send('Posted')
     }
   })
-
-  
-
-
-
 })
+
 router.post('/register', (req, res) => {
   let userData = req.body
   let email = req.body.email
