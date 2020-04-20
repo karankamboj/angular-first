@@ -6,6 +6,7 @@ const userSchema = new Schema({
     title: String,
     content: String,
     comments : [{
+        writer:String,
         comment: String
     }]
 })

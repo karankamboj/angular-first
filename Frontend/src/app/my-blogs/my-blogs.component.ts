@@ -96,5 +96,7 @@ export class MyBlogsComponent implements OnInit {
           })
         })
       })
+
+      
   }
 }

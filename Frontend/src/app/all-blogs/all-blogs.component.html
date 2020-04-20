@@ -19,21 +19,23 @@
 
     
     <div class="container">
-     <h1>Comments : </h1>  <br>
-     <div *ngFor="let comment of blog.comments;index as commenti">
-      {{commenti+1}} :{{comment.comment}} <br>
-    </div>
-      <br> <br>
-
-      <form class="form-inline" role="form">
-        <div class="form-group">
-            <input class="form-control" type="text" placeholder="Your comments" />
-        </div>
-        <div class="form-group">
-            <button class="btn btn-default">Add</button>
-        </div>
-    </form>
-    </div>
+      <h1>Comments : </h1>  <br>
+      <div class="comments {{blog._id}}">
+        <div *ngFor="let comment of blog.comments;index as commenti">
+          {{commenti+1}} :{{comment.comment}} ---- by : {{comment.writer}}<br>
+         </div>
+      </div>
+       <br> <br>
+ 
+       <form class="form-inline" role="form">
+         <div class="form-group">
+             <input class="form-control" type="text" placeholder="Your comments" />
+         </div>
+         <div class="form-group">
+             <button data-id="{{blog._id}}" class="btn btn-default">Add</button>
+         </div>
+     </form>
+     </div>
 
 
   </div>

@@ -61,7 +61,7 @@ const upload = multer({
       if (!file.originalname.match(/\.(jpg|jpeg|png|JPG|JPEG|PNG)$/)) {
           return cb(new Error('Please upload an image'))
       }
-      console.log("CHECK")
+      // console.log("CHECK")
       cb(undefined, true)
   }
 })
@@ -109,8 +109,12 @@ router.post('/send-email',(req,res) => {
 
 router.post('/add-comment',verifyToken,(req,res) => {
 
+  let token = req.headers.authorization.split(' ')[1]
+  let payload = jwt.verify(token, 'secretKey')
+  let writer = payload.email
+
   var blog = Blog.findById(req.body.id,function(err,blog){
-    blog.comments = blog.comments.concat({comment:req.body.comment})
+    blog.comments = blog.comments.concat({writer:writer,comment:req.body.comment})
     blog.save()
     res.send(blog)
   })
@@ -229,7 +233,7 @@ router.post('/post-blog',verifyToken, (req,res) => {
   let payload = jwt.verify(token, 'secretKey')
   let blogData = req.body
   blogData["email"]=payload.email
-  console.log(blogData)
+  // console.log(blogData)
   
   let blog = new Blog(blogData)
   
