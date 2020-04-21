@@ -51,27 +51,36 @@ export class AllBlogsComponent implements OnInit {
           var id = $(this).attr('id')
           var writer = $(this).attr('data-writer')
           var localEmail = localStorage.getItem('email')
-          if(localEmail.toLowerCase()==writer.toLowerCase()) {
-            $(this).append("<button class='deletecomment'> X </button>")
-            $(this).delegate('button','click',()=>{
-
-              _postBlogService.deleteComment({commentid:id,writer:writer})
-              .subscribe(res=> console.log(res), err => console.log(err))
-
-              $(this).slideUp(1000, function(){
-                $(this).remove()
-             }) 
-            })
+          if(localEmail)
+          {
+            if(localEmail.toLowerCase()==writer.toLowerCase()) {
+              $(this).append("<button class='deletecomment'> X </button>")
+              $(this).delegate('button','click',()=>{
+  
+                _postBlogService.deleteComment({commentid:id,writer:writer})
+                .subscribe(res=> console.log(res), err => console.log(err))
+  
+                $(this).slideUp(1000, function(){
+                  $(this).remove()
+               }) 
+              })
+            }
           }
+          
+
         })
         // HIDE COMMENT DELETE BUTTON ON MOUSELEAVE 
         $('.wrap').delegate('.comment','mouseleave',function(){ 
           var id = $(this).attr('id')
           var writer = $(this).attr('data-writer')
           var localEmail = localStorage.getItem('email')
-          if(localEmail.toLowerCase()==writer.toLowerCase()) {
-            $(this).find('button').remove()            
+          if(localEmail)
+          {
+            if(localEmail.toLowerCase()==writer.toLowerCase()) {
+              $(this).find('button').remove()            
+            }
           }
+          
         })
           // ADD COMMENT 
         $('.wrap').delegate('.btn.btn-default','click',function(){

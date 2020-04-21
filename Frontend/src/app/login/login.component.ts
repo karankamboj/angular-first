@@ -23,8 +23,6 @@ export class LoginComponent implements OnInit {
     private _router: Router) { }
 
   ngOnInit(): void {
-    fetch('https://api.countapi.xyz/update/karankamboj/counter1/?amount=1')
-      .then(res => res.json()).then(res => console.log(res))
   }
   loginUser() {
     console.log('Login Component')

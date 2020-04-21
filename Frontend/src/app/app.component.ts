@@ -14,7 +14,7 @@ export class AppComponent {
 
 
   ngOnInit(): void {
-      fetch('https://api.countapi.xyz/info/karankamboj/counter1/?amount=1')
+      fetch('https://api.countapi.xyz/update/karankamboj/counter1/?amount=1')
       .then(res => res.json()).then(res => {
         document.getElementById('counter').innerHTML="Counter : "+res.value
 
