@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { GetBlogsService } from '../get-blogs.service';
 import { PostBlogService } from '../post-blog.service';
 import { Router } from '@angular/router';
+import * as $ from 'jquery'
 
 @Component({
   selector: 'app-all-blogs',
@@ -28,6 +29,7 @@ export class AllBlogsComponent implements OnInit {
 
       var _postBlogService=this._postBlogService
        var _router=this._router
+
       // Make Post Req To API with postBlogService Fxn 
       function addCommentToDb(comment,id) {
         var data={comment:comment,id:id}
@@ -41,9 +43,37 @@ export class AllBlogsComponent implements OnInit {
       }
    
 
-
+      // Jquery 
       $(function(){
 
+        // DELETE COMMENT BUTTON SHOW ON HOVER 
+        $('.wrap').delegate('.comment','mouseenter',function(){ 
+          var id = $(this).attr('id')
+          var writer = $(this).attr('data-writer')
+          var localEmail = localStorage.getItem('email')
+          if(localEmail.toLowerCase()==writer.toLowerCase()) {
+            $(this).append("<button class='deletecomment'> X </button>")
+            $(this).delegate('button','click',()=>{
+
+              _postBlogService.deleteComment({commentid:id,writer:writer})
+              .subscribe(res=> console.log(res), err => console.log(err))
+
+              $(this).slideUp(1000, function(){
+                $(this).remove()
+             }) 
+            })
+          }
+        })
+        // HIDE COMMENT DELETE BUTTON ON MOUSELEAVE 
+        $('.wrap').delegate('.comment','mouseleave',function(){ 
+          var id = $(this).attr('id')
+          var writer = $(this).attr('data-writer')
+          var localEmail = localStorage.getItem('email')
+          if(localEmail.toLowerCase()==writer.toLowerCase()) {
+            $(this).find('button').remove()            
+          }
+        })
+          // ADD COMMENT 
         $('.wrap').delegate('.btn.btn-default','click',function(){
           var id=$(this).attr('id')
           var $div = $(this).closest('div').parent()
@@ -57,33 +87,9 @@ export class AllBlogsComponent implements OnInit {
               addCommentToDb(comment,id)
               var $comments = $('.comments.'+id)
               $comments.append("<div>"+"NEW : "+comment+"<br></div>")
-             
           }
         })
 
-        // DELETE BUTTON
-        $('.wrap').delegate('.remove','click',function() {
-          console.log($(this).attr('id'))
-          var $cur=$(this)
-          var $box = $(this).closest('.box')
-          
-          $.ajax({
-            type: 'delete',
-            url: "http://localhost:3000/api/delete-blog/"+$cur.attr('id'),
-            success: function() {
-              console.log("Deleted")
-              
-              console.log("YES")
-              
-              $box.slideUp(1000, function(){
-                $(this).remove()
-             })
-            },
-            error : function() {
-              alert('Error in Deletion')
-            }
-          })
-        })
       })
 
 

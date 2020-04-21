@@ -23,8 +23,8 @@
     <div class="container">
       <h1>Comments : </h1>  <br>
       <div class="comments {{blog._id}}">
-        <div *ngFor="let comment of blog.comments;index as commenti" id="{{comment.writer}}">
-          {{commenti+1}} :{{comment.comment}} ---- by : {{comment.writer}}
+        <div *ngFor="let comment of blog.comments;index as commenti" class="comment" attr.data-writer="{{comment.writer}}" data-id="{{comment._id}}">
+         -> {{comment.writer}} :{{comment.comment}} 
         </div>
       </div>
        <br> <br>

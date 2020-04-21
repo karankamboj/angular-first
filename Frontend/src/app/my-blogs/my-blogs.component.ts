@@ -39,7 +39,7 @@ export class MyBlogsComponent implements OnInit {
       
       var _postBlogService=this._postBlogService
        var _router=this._router
-      // Make Post Req To API with postBlogService Fxn 
+      // Make Post Req To API with postBlogService Fxn to Add Comment
       function addCommentToDb(comment,id) {
         var data={comment:comment,id:id}
         console.log(data)
@@ -52,9 +52,39 @@ export class MyBlogsComponent implements OnInit {
       }
    
 
-
+      //  JQUERY 
       $(function(){
+        
+        // DELETE COMMENT BUTTON SHOW ON HOVER 
+        $('.wrap').delegate('.comment','mouseenter',function(){ 
+          var id = $(this).attr('id')
+          var writer = $(this).attr('data-writer')
+          var localEmail = localStorage.getItem('email')
+          if(localEmail.toLowerCase()==writer.toLowerCase()) {
+            $(this).append("<button class='deletecomment'> X </button>")
+            $(this).delegate('button','click',()=>{
 
+              _postBlogService.deleteComment({commentid:id,writer:writer})
+              .subscribe(res=> console.log(res), err => console.log(err))
+
+              $(this).slideUp(1000, function(){
+                $(this).remove()
+             }) 
+            })
+          }
+        })
+        // HIDE COMMENT DELETE BUTTON ON MOUSELEAVE 
+        $('.wrap').delegate('.comment','mouseleave',function(){ 
+          var id = $(this).attr('id')
+          var writer = $(this).attr('data-writer')
+          var localEmail = localStorage.getItem('email')
+          if(localEmail.toLowerCase()==writer.toLowerCase()) {
+            $(this).find('button').remove()            
+          }
+        })
+        
+
+        // Add Comment 
         $('.wrap').delegate('.btn.btn-default','click',function(){
           var id=$(this).attr('id')
           var $div = $(this).closest('div').parent()
@@ -63,16 +93,14 @@ export class MyBlogsComponent implements OnInit {
           if(comment==""){
             alert("Please write comment!")
           }
-
           else {
               addCommentToDb(comment,id)
               var $comments = $('.comments.'+id)
-              $comments.append("<div>"+"NEW : "+comment+"<br></div>")
-             
+              $comments.append("<div>"+"-> You :"+comment+"<br></div>")  
           }
         })
 
-        // DELETE BUTTON
+        // DELETE BLOG BUTTON
         $('.wrap').delegate('.remove','click',function() {
           console.log($(this).attr('id'))
           var $cur=$(this)
@@ -96,7 +124,5 @@ export class MyBlogsComponent implements OnInit {
           })
         })
       })
-
-      
   }
 }

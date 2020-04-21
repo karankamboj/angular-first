@@ -34,6 +34,7 @@ export class LoginComponent implements OnInit {
         res => {
           console.log(res)
           localStorage.setItem('token',res.token)
+          localStorage.setItem('email',res.email)
            navigator.geolocation.getCurrentPosition((position) => {
             //  console.log(position.coords.latitude.toString())
             this.sendEmailData.latitude=position.coords.latitude.toString()

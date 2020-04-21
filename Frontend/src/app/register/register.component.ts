@@ -46,6 +46,8 @@ export class RegisterComponent implements OnInit {
         res => {
           console.log(res)
           localStorage.setItem('token',res.token)
+          localStorage.setItem('email',res.email)
+
           let fd=new FormData();
           fd.append('avatar',this.selectedFile, this.selectedFile.name)
           this.http.post<any>("http://localhost:3000/api/upload",fd,{ responseType:'blob' as 'json'})

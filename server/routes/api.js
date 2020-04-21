@@ -7,6 +7,9 @@ const multer = require('multer')
 const nodemailer = require('nodemailer');
 const expressWinston = require('express-winston');
 const winston = require('winston');
+const mongoose = require('mongoose')
+const ObjectId = mongoose.Types.ObjectId
+
 
 
 // express-winston logger makes sense BEFORE the router
@@ -106,6 +109,27 @@ router.post('/send-email',(req,res) => {
   });
 
 })
+
+router.post('/delete-comment',verifyToken,(req,res) => {
+
+  let token = req.headers.authorization.split(' ')[1]
+  let payload = jwt.verify(token, 'secretKey')
+  let writer = payload.email
+  if(writer!=req.body.writer)
+    res.status(404).send("CANNOT")
+  else{
+
+    Blog.updateOne(
+      {'comments._id': ObjectId(req.body.commentid)}, 
+      {$pull: {'comments': {'_id': ObjectId(req.body.commentid)}}}
+    ).then((data)=>console.log(data))
+    res.send("OK")
+
+  }
+  
+  
+})
+
 
 router.post('/add-comment',verifyToken,(req,res) => {
 
@@ -295,7 +319,7 @@ router.post('/login', (req, res) => {
         let payload = { subject : user._id, email: user.email }
         let token = jwt.sign(payload, 'secretKey')
 
-        res.status(200).send({token})
+        res.status(200).send({email: user.email,token:token})
       }
     }
   })

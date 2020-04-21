@@ -21,13 +21,13 @@
     <div class="container">
       <h1>Comments : </h1>  <br>
       <div class="comments {{blog._id}}">
-        <div *ngFor="let comment of blog.comments;index as commenti">
-          {{commenti+1}} :{{comment.comment}} ---- by : {{comment.writer}}<br>
-         </div>
+        <div *ngFor="let comment of blog.comments;index as commenti" class="comment" attr.data-writer="{{comment.writer}}" data-id="{{comment._id}}">
+         -> {{comment.writer}} :{{comment.comment}} 
+        </div>
       </div>
        <br> <br>
  
-       <form class="form-inline" role="form">
+      <form class="form-inline" role="form">
          <div class="form-group">
              <input class="form-control" type="text" placeholder="Your comments" />
          </div>
@@ -35,7 +35,7 @@
              <button data-id="{{blog._id}}" class="btn btn-default">Add</button>
          </div>
      </form>
-     </div>
+    </div>
 
 
   </div>
